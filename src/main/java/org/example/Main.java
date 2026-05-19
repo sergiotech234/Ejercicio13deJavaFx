@@ -1,65 +1,63 @@
 package org.example;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.geometry.Pos;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage primaryStage) {
 
-        // Etiqueta
-        Label lblPais = new Label("Seleccione un país:");
-
-        // ComboBox
-        ComboBox<String> comboPais = new ComboBox<>();
-        comboPais.getItems().addAll(
-                "España",
-                "México",
-                "Argentina",
-                "Colombia",
-                "Chile"
-        );
+        // Campo de texto
+        TextField txtDireccion = new TextField();
+        txtDireccion.setPromptText("Introduce una dirección");
 
         // Botón
-        Button btnMostrar = new Button("Mostrar");
+        Button boton = new Button("Confirmar");
 
-        // Evento del botón
-        btnMostrar.setOnAction(e -> {
-            String pais = comboPais.getValue();
+        // Evento
+        boton.setOnAction(e -> mostrarConfirmacion(txtDireccion));
 
-            if (pais != null) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("País seleccionado");
-                alert.setHeaderText(null);
-                alert.setContentText("Has seleccionado: " + pais);
-                alert.showAndWait();
-            } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Advertencia");
-                alert.setHeaderText(null);
-                alert.setContentText("Seleccione un país.");
-                alert.showAndWait();
-            }
-        });
+        VBox root = new VBox(15);
+        root.setAlignment(Pos.CENTER);
 
-        // Layout
-        VBox root = new VBox(10, lblPais, comboPais, btnMostrar);
-        root.setPadding(new Insets(15));
+        root.getChildren().addAll(
+                new Label("Dirección:"),
+                txtDireccion,
+                boton
+        );
 
-        // Escena
-        Scene scene = new Scene(root, 300, 180);
+        Scene scene = new Scene(root, 350, 200);
 
-        stage.setTitle("Formulario País");
-        stage.setScene(scene);
-        stage.show();
+        primaryStage.setTitle("Formulario dirección");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    // Método privado
+    private void mostrarConfirmacion(TextField txtDireccion) {
+
+        String direccion =
+                txtDireccion.getText();
+
+        Alert alerta =
+                new Alert(Alert.AlertType.INFORMATION);
+
+        alerta.setTitle("Confirmación");
+        alerta.setHeaderText("Dirección registrada");
+
+        alerta.setContentText(
+                "La dirección es: " + direccion
+        );
+
+        alerta.showAndWait();
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }
